@@ -1,0 +1,36 @@
+name: Build and Publish
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0
+      
+      - name: Restore dependencies
+        run: dotnet restore
+      
+      - name: Build project
+        run: dotnet build --configuration Release
+      
+      - name: Run tests
+        run: dotnet test --configuration Release
+      
+      - name: Publish artifact
+        run: dotnet publish --configuration Release --output ./publish
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: CompiledApp
+          path: ./publish
