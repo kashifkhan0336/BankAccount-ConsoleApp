@@ -39,11 +39,9 @@ jobs:
           title: Released
       
       - name: Upload artifact
-        uses: actions/upload-release-asset@v1
+        uses: softprops/action-gh-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          if: startsWith(github.ref, 'refs/tags/')
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./publish/YourApplication.zip
-          asset_name: BankApplication.zip
-          asset_content_type: application/zip
+          files: BankAccount.dll
