@@ -44,5 +44,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
           if: startsWith(github.ref, 'refs/tags/')
         with:
-          tag_name: ${{ steps.tag.outputs.release_tag }}
-          files: BankAccount.dll
+          tag_name: test
+          files: ./publish/BankAccount.dll
