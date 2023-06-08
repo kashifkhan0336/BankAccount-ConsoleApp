@@ -29,23 +29,35 @@ namespace BankAccount
             return null;
         }
 
-        static void Main(string[] args) {
-            Console.BackgroundColor = ConsoleColor.Magenta;
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Clear();
-
+        static void createFile()
+        {
             string filePath = "account.json";
 
             try
             {
-                // Create the file
-                FileStream fileStream = File.Create(filePath);
-                fileStream.Close();
+                // Check if the file already exists
+                if (File.Exists(filePath))
+                {
+                    return;
+                }
+                else
+                {
+                    // Create the file
+                    FileStream fileStream = File.Create(filePath);
+                    fileStream.Close();
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Something went wrong :(");
             }
+        }
+        static void Main(string[] args) {
+            Console.BackgroundColor = ConsoleColor.Magenta;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Clear();
+
+            createFile();
 
             Console.WriteLine("Welcome To Jhangra Bank");
             Console.WriteLine("Tell us what do you want\nEnter 0 for Creating an Account\nEnter 1 for login to your account");
