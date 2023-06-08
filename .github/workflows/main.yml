@@ -1,4 +1,5 @@
 name: Build and Publish
+
 on:
   push:
     branches:
@@ -6,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code
@@ -15,7 +16,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '7.0.x'
+          dotnet-version: "7.0"
       
       - name: Restore dependencies
         run: dotnet restore
@@ -28,9 +29,24 @@ jobs:
       
       - name: Publish artifact
         run: dotnet publish --configuration Release --output ./publish
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: CompiledApp
-          path: ./publish
+          tag_name: v1.0.0
+          release_name: Release v1.0.0
+          draft: false
+          prerelease: false
+      
+      - name: Upload artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./publish/YourApplication.zip
+          asset_name: BankApplication.zip
+          asset_content_type: application/zip
